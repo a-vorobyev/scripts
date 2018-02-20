@@ -1,4 +1,4 @@
 language: java
 java:
 - '1.8'
-script: gradlew build
+script: sh gradlew build
