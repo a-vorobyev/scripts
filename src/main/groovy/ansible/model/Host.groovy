@@ -1,4 +1,4 @@
-package ansible
+package ansible.model
 
 class Host {
 
