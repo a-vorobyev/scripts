@@ -21,7 +21,7 @@ switch (operation) {
 
         Inventory inventory = new JsonFactory(inventoryData).createInventory()
 
-        inventoryData[_meta] = [hostvars: inventory.allHostsVars]
+        inventoryData['_meta'] = [hostvars: inventory.allHostsVars]
 
         println JsonOutput.prettyPrint(JsonOutput.toJson(inventoryData))
 

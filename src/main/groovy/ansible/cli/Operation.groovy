@@ -17,7 +17,7 @@ enum Operation {
             it.args == _es
         }
 
-        assert operation, "incorrect arguments: $args"
+        assert operation, "not sensible args combination: $args"
 
         operation
     }
