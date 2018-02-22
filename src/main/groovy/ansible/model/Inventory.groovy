@@ -1,39 +1,49 @@
 package ansible.model
 
+import groovy.json.JsonOutput
 
 class Inventory {
 
     Set<Group> groups
     Set<Host> hosts
 
-    Map<String, ?> getGroupVars(Group group) {
+    String render() {
 
-        Map<String, ?> myVars = group.vars //collect from parent tree
+        def invGroups = groups.findAll { it.hosts || it.children || it.vars }.collectEntries {
 
-        group.parents.inject([*: myVars]) { Map<String, ?> acc, Group parent ->
+            def data = null
 
-            getGroupVars(parent).each {
-                if (!acc.containsKey(it.key)) acc[it.key] = it.value
+            if (it.hosts && !(it.vars || it.children)) {
+                data = it.hosts.name
+            } else if (it.vars || it.children) {
+                data = [:]
+                if (it.vars) data.vars = it.vars
+                if (it.children) data.children = it.children.name
+                if (it.hosts) data.hosts = it.hosts.name
             }
-            acc
+
+            [(it.name): data]
         }
+
+        def invHosts = hosts.collectEntries {
+            [(it.name): it.vars]
+        }
+
+        def inventory = [
+                _meta: [
+                        hostvars: invHosts
+                ],
+                *    : invGroups
+        ]
+
+        JsonOutput.prettyPrint(JsonOutput.toJson(inventory))
     }
 
-    Map<String, ?> getHostVars(Host host) {
+    String renderHost(String name) {
 
-        host.groups.inject([:]) { Map<String, ?> acc, Group group ->
+        Host host = hosts.find { it.name == name }
+        assert host, "there is no host $name in inventory"
 
-            getGroupVars(group).each {
-                if (!acc.containsKey(it.key)) acc[it.key] = it.value
-            }
-            acc
-        }
-    }
-
-    Map<String, ?> getAllHostsVars() {
-
-        hosts.collectEntries {
-            [(it.name): getHostVars(it)]
-        }
+        JsonOutput.prettyPrint(JsonOutput.toJson(host.vars))
     }
 }
