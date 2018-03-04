@@ -70,7 +70,7 @@ class IniFactory {
 
         if (_block =~ /^\[.*?]/) return false
 
-        block.split(/\n/).each {
+        _block.split(/\n/).each {
             parseHost it
         }
         true
