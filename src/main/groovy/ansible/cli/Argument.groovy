@@ -2,7 +2,7 @@ package ansible.cli
 
 enum Argument {
 
-    FILE('--file'), HOST('--host'), LIST('--list')
+    FILE('--file'), HOST('--host'), LIST('--list'), GCP_PROJECT('--gcp-project'), GCP_ZONE('--gcp-zone')
 
     Argument(String key) {
         this.key = key

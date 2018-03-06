@@ -1,13 +1,17 @@
 package provider
 
+import provider.gcp.DataProvider
+
 class ProviderFactory {
 
-    HostDataProvider createHostDataProvider() {
+    static HostDataProvider createGcpHostDataProvider(String appName, String projectId, String zoneName) {
+
+        DataProvider gcpDataProvider = new DataProvider(appName)
 
         new HostDataProvider() {
             @Override
             Map<String, Object> getData() {
-                return null
+                gcpDataProvider.getInstances(projectId, zoneName).collectEntries { [(it.name): it] }
             }
         }
     }

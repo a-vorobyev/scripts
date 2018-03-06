@@ -6,11 +6,15 @@ import com.google.api.services.compute.model.InstanceList
 
 class DataProvider {
 
-    private static final String APP_NAME = 'APIDR04ER'
+    private final String appName
     private final ServiceFactory serviceFactory = new ServiceFactory()
 
+    DataProvider(String appName) {
+        this.appName = appName
+    }
+
     List<Instance> getInstances(String projectId, String zoneName) {
-        Compute compute = serviceFactory.createCompute(APP_NAME)
+        Compute compute = serviceFactory.createCompute(appName)
         Compute.Instances.List instances = compute.instances().list(projectId, zoneName)
         InstanceList list = instances.execute()
         list.getItems()
