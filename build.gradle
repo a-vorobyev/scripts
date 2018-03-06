@@ -12,7 +12,7 @@ repositories {
 }
 
 dependencies {
-    compile 'org.codehaus.groovy:groovy-all:2.4.13'
+    compile 'org.codehaus.groovy:groovy-all:2.4.13', project(':gcp-client')
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
