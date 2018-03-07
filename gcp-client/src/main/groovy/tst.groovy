@@ -33,7 +33,12 @@ def zoneName = 'europe-west1-d'
 Compute.Instances.List instances = compute.instances().list(projectId, zoneName)
 InstanceList list = instances.execute()
 
-println list.getItems().collectMany {
+println list.toPrettyString()
+
+println list.getItems()?.collectMany {
     println(it.name)
-    it.networkInterfaces.accessConfigs.natIP.flatten()
-}
+    [
+            it.networkInterfaces.accessConfigs.natIP,
+            it.networkInterfaces.networkIP
+    ].flatten()
+} ?: 'n/a'

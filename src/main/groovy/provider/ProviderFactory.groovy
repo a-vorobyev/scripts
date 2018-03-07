@@ -11,7 +11,7 @@ class ProviderFactory {
         new HostDataProvider() {
             @Override
             Map<String, Object> getData() {
-                gcpDataProvider.getInstances(projectId, zoneName).collectEntries { [(it.name): it] }
+                gcpDataProvider.getInstances(projectId, zoneName)?.collectEntries { [(it.name): it] } ?: [:]
             }
         }
     }
