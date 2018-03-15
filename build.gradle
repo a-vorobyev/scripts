@@ -16,6 +16,6 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
-task showMe {
-    println sourceSets.test.resources.files
+run {
+  args = project.hasProperty('my_run_args') ? [ *my_run_args?.split(' ') ] : []
 }
